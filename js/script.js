@@ -4,6 +4,8 @@ const username = "gwolf97"
 const repoList = document.querySelector(".repo-list")
 const repoListSection = document.querySelector(".repos")
 const repoData = document.querySelector(".repo-data")
+const backToButton = document.querySelector(".view-repos")
+const searchRepos = document.querySelector(".filter-repos") 
 
 const gitHubProfileInfo = async function(){
     const getInfo = await fetch(`https://api.github.com/users/${username}`)
@@ -83,5 +85,30 @@ const displayRepoInfo = function(repoInfo,languages){
     repoData.append(div)
     repoData.classList.remove("hide")
     repoListSection.classList.add("hide")
-
+    backToButton.classList.remove("hide")
 }
+
+backToButton.addEventListener("click", function(){
+    repoData.innerHTML = ""
+    repoData.classList.add("hide")
+    repoListSection.classList.remove("hide")
+    backToButton.classList.add("hide")
+})
+
+searchRepos.classList.remove("hide")
+
+searchRepos.addEventListener("input", function(e){
+ const searchWords = e.target.value
+ const allRepos = document.querySelectorAll(".repo")
+ const lowerCaseSearch = searchWords.toLowerCase()
+
+ for (const repo of allRepos){
+     const lowerCaseRepo = repo.innerText.toLowerCase()
+     if (lowerCaseRepo.includes(lowerCaseSearch)){
+         repo.classList.remove("hide")
+     }
+     else {
+         repo.classList.add("hide")
+     }
+ }
+})
